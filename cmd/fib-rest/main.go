@@ -15,7 +15,7 @@ func main() {
 	r := handler.RegisterNewRouter(h)
 
 	fmt.Println("starting server")
+
 	// Fire up the server ":8080"
-	// todo panic recover
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

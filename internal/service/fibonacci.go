@@ -40,7 +40,7 @@ func (f *fib) GetNextFib() uint32 {
 
 	// note: if the next value smaller than f.prevFib, the max value of uint32 has been exceeded(overflow), reset the sequence.
 	// Although the func returns uint32 and in Fibonacci there's always going to have the same amount of numbers in the sequence for
-	// uint32, the generic approach is better since it can be adapted to other units: unit64, etc. (bigInt is handled in different way).
+	// uint32, the generic approach is better since it can be adapted to other units: int, unit64, etc. (bigInt is handled in different way).
 	if nc < f.prevFib {
 		f.currFib = 0
 		f.prevFib = 0
