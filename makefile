@@ -1,7 +1,7 @@
 .PHONY: build run stop clean all current next prev
 
 build:
-	go build -o /out/build fibonacci-sequence/cmd/app
+	go build -o ./out/build ./cmd/app/
 
 run:
 	./out/build & echo $$! > run.pid
@@ -10,7 +10,7 @@ stop:
 	kill `cat run.pid` && rm -f run.pid
 
 clean:
-	rm -rf ./out
+	rm -rf ./out ./run.pid
 
 all: build run
 
