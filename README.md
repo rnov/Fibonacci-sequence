@@ -49,7 +49,7 @@ The project's design adheres to the [golang-standards/project-layout](https://gi
 
 Due to the simplicity of the project some of its logic is contained in the same package.
 
-It makes use of dependency injection pattern through composition to make the code more testable and maintainable.(polymorphism)
+It makes use of dependency injection (widely used in go) pattern through composition to make the code more testable and maintainable.
 
 ### Testing
 
@@ -73,12 +73,11 @@ go test -run=^$ -bench=. ./... -v
 - Due to project simplicity, some decisions were made to keep the project simple and easy such as:
    - Implemented a limited amount of tests mostly around `next` operation in service and handlers, seems an overkill to 
      explicitly have tests for read operations due to their simplicity in this case.
-   - The project layout is simple yet is open to extension and scaling.
    - Loading from config file or containerization is missing.
-   - Service structure is simple yet is based on well-known patterns and is open to extension (playing safe).
+   - The project layout is simple yet is based on well-known patterns and is open to extension (playing safe).
 - Added benchmark tests to measure the performance of the service. `1082263 req/s` for the most expensive operation `next`.
   Exceeding by the task requirements of `1000 req/s`.
-- Based on the implementation the only place where the service could panic from external input is in the requests,
+- Based on the implementation the only place where the service could panic is through incoming requests,
   That's why I've added a panic recovery middleware to handle any panic that could be caused.
   (Technically internal panic could occur in marshal when building the response which is done by us and unless a chan
    or func is passed is safe).
