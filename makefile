@@ -15,10 +15,10 @@ clean:
 all: build run
 
 bench:
-	go test -bench=Benchmark ./...
+	go test -run=^$$ -bench=. ./... -v
 
 test:
-	go test ./...
+	go test ./... -v -cover
 
 current:
 	curl --location "http://127.0.0.1:8080/current" | jq

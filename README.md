@@ -62,6 +62,11 @@ Run benchmarks:
 make bench
 ```
 
+```sh
+# In case console output is not clear
+go test -run=^$ -bench=. ./... -v
+```
+
 ### Notes
 
 - Have left more comments than usual to explain the code as `notes`.
