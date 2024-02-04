@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/rnov/fibonacci-sequence/internal/handler"
-	"github.com/rnov/fibonacci-sequence/internal/service"
 	"log"
 	"net/http"
+
+	"github.com/rnov/fibonacci-sequence/internal/handler"
+	"github.com/rnov/fibonacci-sequence/internal/service"
 )
 
 func main() {

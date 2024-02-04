@@ -1,4 +1,4 @@
-.PHONY: build run stop clean all current next prev
+.PHONY: build run stop clean all current next prev bench test
 
 build:
 	go build -o ./out/build ./cmd/app/
@@ -13,6 +13,12 @@ clean:
 	rm -rf ./out ./run.pid
 
 all: build run
+
+bench:
+	go test -bench=Benchmark ./...
+
+test:
+	go test ./...
 
 current:
 	curl --location "http://127.0.0.1:8080/current" | jq

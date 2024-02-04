@@ -55,7 +55,37 @@ func TestFib_GetNextFib(t *testing.T) {
 	}
 }
 
-// BenchmarkFib_GetNextFib benchmarks overall performance of the GetNextFib endpoint in NS/op.
+// TestPanicRecoveryMiddleware tests that the recoverFromPanic middleware recovers from handler panics
+func Test_Panic_recovery(t *testing.T) {
+
+	t.Run("panic recovery middleware", func(t *testing.T) {
+		// Handler that intentionally panics
+		panicHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			panic("test panic")
+		})
+
+		// Wrap the panic handler with the recoverFromPanic middleware
+		testHandler := recoverFromPanic(panicHandler)
+
+		// Create an httptest server using the panic recovery wrapped handler
+		server := httptest.NewServer(testHandler)
+		defer server.Close()
+
+		// Make a request to the test server
+		resp, err := http.Get(server.URL)
+		if err != nil {
+			t.Fatalf("Failed to make request to test server: %v", err)
+		}
+		defer resp.Body.Close()
+
+		// Check that the response code is 500 Internal Server Error
+		if resp.StatusCode != http.StatusInternalServerError {
+			t.Errorf("Expected status code 500, got: %d", resp.StatusCode)
+		}
+	})
+}
+
+// BenchmarkFib_GetNextFib benchmarks overall performance of the Next endpoint in NS/op.
 func BenchmarkFib_GetNextFib(b *testing.B) {
 	f := service.NewFibonacci()
 	h := NewHTTPHandler(f)
@@ -109,32 +139,4 @@ func BenchmarkFib_GetNextFibIn1Sec(b *testing.B) {
 	}
 
 	b.Logf("Amount of requests done in 1 second: %d", i)
-}
-
-// TestPanicRecoveryMiddleware tests that the recoverFromPanic middleware recovers from handler panics
-func TestPanicRecoveryMiddleware(t *testing.T) {
-	// Handler that intentionally panics
-	panicHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		panic("test panic")
-	})
-
-	// Wrap the panic handler with the recoverFromPanic middleware
-	testHandler := recoverFromPanic(panicHandler)
-
-	// Create an httptest server using the panic recovery wrapped handler
-	server := httptest.NewServer(testHandler)
-	defer server.Close()
-
-	// Make a request to the test server
-	resp, err := http.Get(server.URL)
-	if err != nil {
-		t.Fatalf("Failed to make request to test server: %v", err)
-	}
-	defer resp.Body.Close()
-
-	// Check that the response code is 500 Internal Server Error
-	if resp.StatusCode != http.StatusInternalServerError {
-		t.Errorf("Expected status code 500, got: %d", resp.StatusCode)
-	}
-
 }

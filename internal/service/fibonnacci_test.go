@@ -14,12 +14,10 @@ func TestFib_GetNextFib(t *testing.T) {
 	f := NewFibonacci()
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-
-			fn := f.GetNextFib()
+			fn := f.Next()
 			if fn != test.expectedValue {
 				t.Fatalf("test %s failed, expected %d, got %d", test.name, test.expectedValue, fn)
 			}
-
 		})
 	}
 }
